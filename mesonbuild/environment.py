@@ -396,7 +396,8 @@ class Environment:
                 # Visual Studio prints version number to stderr but
                 # everything else to stdout. Why? Lord only knows.
                 version = search_version(err)
-                return VisualStudioCCompiler([compiler], version, is_cross, exe_wrap)
+                is_64 = err.split()[0].endswith(' x64')
+                return VisualStudioCCompiler([compiler], version, is_cross, exe_wrap, is_64)
             if '(ICC)' in out:
                 # TODO: add microsoft add check OSX
                 inteltype = ICC_STANDARD
@@ -529,7 +530,8 @@ class Environment:
                 return ClangCPPCompiler(ccache + [compiler], version, cltype, is_cross, exe_wrap)
             if 'Microsoft' in out or 'Microsoft' in err:
                 version = search_version(err)
-                return VisualStudioCPPCompiler([compiler], version, is_cross, exe_wrap)
+                is_64 = err.split()[0].endswith(' x64')
+                return VisualStudioCPPCompiler([compiler], version, is_cross, exe_wrap, is_64)
             if '(ICC)' in out:
                 # TODO: add microsoft add check OSX
                 inteltype = ICC_STANDARD
